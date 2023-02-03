@@ -37,6 +37,9 @@ In addition: Warning messages:
 3: In max(x) : no non-missing arguments to max; returning -Inf
 ```
 Je me suis dit qu'à partir de là je poubvais ajouter des courbes grâce à line(), mais si le début ne fonctionne pas...
-
+### La solution de la dernière chance
+Si toutefois je n'y arrive pas, je sais qu'en divisant mon tableau, en le mettant davantage sous forme de liste, je peux y arriver.\
+C'est à dire que la colonne 1 repètera 5 fois les **âges**, la colonne 2 sera composées des **niveaux**, et la 3ème colonne fera les **proportions** selon les critères.\
+Ce n'est pas forcément une solution que j'envisage, parce qu'il faut refaire le tableau, c'est un peu long, et je n'apprendrai rien. 
 
 ## Si vous avez une idée, je suis donc preneur de toute solution !
