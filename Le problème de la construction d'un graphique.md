@@ -24,7 +24,7 @@ Avec esquisse de ggplot2 j'ai essayé de faire quelque chose, mais rien de bien 
 ### Cheatsheet ggplot2
 Je tente donc, depuis la cheatsheet de ggplot2 de faire un barplot, mais les paramètres sont incompréhensibles : \
 `s<-ggplot(CompNum1,aes(fl, fill=drv))`\
-Peut-être que si je comprennais ce que doit être `drv` j'y arriverai. Car je suppose que `fl` est un ensemble de données.
+Peut-être que si je comprenais ce que doit être `drv` j'y arriverai. Car je suppose que `fl` est un ensemble de données.
 ### Un plot classique ?
 J'ai même essayé plus classiquement :\
 `plot(AgeComp1,NivComp1A)`\
