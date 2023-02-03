@@ -6,7 +6,7 @@ Le code initial est le suivant :\
 #install.packages("ggplot2")
 library(ggplot2)
 CompNum1<-read.table("Fig1_INSEE_competences_numeriques.csv", sep=";",dec=",",header=TRUE, col.names = c("Age","Aucune", "Faible","Basique","Plus que basique" ))
-AgeComp1<-facor(CompNum1[,1])
+AgeComp1<-factor(CompNum1[,1])
 NivComp1A<-CompNum1[,2]
 NivComp1F<-CompNum1[,3]
 NivComp1B<-CompNum1[,4]
