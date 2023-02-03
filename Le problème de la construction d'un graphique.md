@@ -26,10 +26,11 @@ Je tente donc, depuis la cheatsheet de ggplot2 de faire un barplot, mais les par
 `s<-ggplot(CompNum1,aes(fl, fill=drv))`\
 Peut-être que si je comprenais ce que doit être `drv` j'y arriverai. Car je suppose que `fl` est un ensemble de données.
 ### Un plot classique ?
-En cours ...
+Même comme ça je n'y arrive pas, le plot tracé `plot(AgeComp1,NivComp1A, type = "l")`ne correspond en rien à ce que j'espère faire ensuite ; c'est à dire superposer des courbes par la fonction line().
 ### La solution de la dernière chance
 Si toutefois je n'y arrive pas, je sais qu'en divisant mon tableau, en le mettant davantage sous forme de liste, je peux y arriver.\
 C'est à dire que la colonne 1 repètera 5 fois les **âges**, la colonne 2 sera composées des **niveaux**, et la 3ème colonne fera les **proportions** selon les critères.\
-Ce n'est pas forcément une solution que j'envisage, parce qu'il faut refaire le tableau, c'est un peu long, et je n'apprendrai rien. 
+Ce n'est pas forcément une solution que j'envisage, parce qu'il faut refaire le tableau, c'est un peu long, et je n'apprendrai rien. \
+Edit, plus je vois d'exemples, plus je me dis que c'est parce que les données ne sont pas rentrées de telle sorte à faire apparaitre clairement les 2 variables.
 
 ## Si vous avez une idée, je suis donc preneur de toute solution !
