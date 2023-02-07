@@ -5,10 +5,10 @@
 library(ggplot2)
 #install.packages("reshape2")
 library(reshape2)
-#install.packages("esquisse")
+#install.packages("esquisse") #aurait pu être utile pour tracer facilement notre graph, mais ne fonctionne pas avec 2 variables qualitatives.
 #library(esquisse)
-#install.packages("questionr")
-library(questionr)
+#install.packages("questionr")  # aurait pu être utle pour les fonction lprop() et cprop() pour avoir les proportions en colonne ou en ligne. Mais ça ne fonctionnne pas parce que c'est des variables qualitatives.
+#library(questionr)
 ##### ETAPE 1 : importantion des donnees #####
 setwd("C:/Pierre/ISARA 4A/ModuleA-OPEN/ProjetPerso")
 #Quand les données sont en .csv
@@ -22,10 +22,6 @@ CompNum1_unmelted<-read.table("Fig1_INSEE_competences_numeriques.csv",
 ##### ETAPE 2 : reformatage #####
 #on utilise la fonction melt() du package reshape2
 Comp1 <- melt(CompNum1_unmelted, id.vars="Age", col.names= c("Tranche d'âge","Niveau de compétence", "Proportion")) # transforme les données en 3 colonnes, avec 1 ligne = 1 pourcentage/1 croisement
-prop.table(CompNum1_unmelted, 1)
-class(Comp1)
-Comp1_matrix <- as.matrix(Comp1)
-Comp1_proportions <- prop.table(Comp1_matrix, 1)
 
 ##### ETAPE 3 : calculs statistiques #####
 
