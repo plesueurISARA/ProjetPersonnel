@@ -33,4 +33,26 @@ C'est à dire que la colonne 1 repètera 5 fois les **âges**, la colonne 2 sera
 Ce n'est pas forcément une solution que j'envisage, parce qu'il faut refaire le tableau, c'est un peu long, et je n'apprendrai rien. \
 Edit, plus je vois d'exemples, plus je me dis que c'est parce que les données ne sont pas rentrées de telle sorte à faire apparaitre clairement les 2 variables.
 
-## Si vous avez une idée, je suis donc preneur de toute solution !
+## Code de la solution 
+Finalement, ce code reprend la "solution de la dernière chance" mais avec une fonction : melt(). On aurait tout aussi bien pu utiliser les fonctions pivot_longer et pivot_wider du package "tidyR". 
+```
+#install.packages("ggplot2")
+library(ggplot2)
+#install.packages("reshape2")
+library(reshape2)
+
+#Quand les données sont en .csv
+CompNum1_unmelted<-read.table("Fig1_INSEE_competences_numeriques.csv", 
+                     sep=";",dec=",",header=TRUE, 
+                     col.names = c("Age","Aucune", "Faible","Basique","Plus que basique" )
+                     ) # fonctionnel
+
+#on utilise la fonction melt() du package reshape2
+Comp1 <- melt(CompNum1_unmelted, id.vars="Age", col.names= c("Tranche d'âge","Niveau de compétence", "Proportion")) # transforme les données en 3 colonnes, avec 1 ligne = 1 pourcentage/1 croisement
+
+ggplot(data2_melted, aes(x=Age, y=value, fill=variable)) +
+  geom_bar(stat="identity", position="stack") +
+  labs(x="Tranche d'âge", y="Proportion de la population") +
+  ggtitle("Compétence numérique en fonction de l'âge") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
