@@ -33,12 +33,13 @@ CompNum2bis_unmelted<-read.table("Fig2bis_INSEE_competences_numeriques.csv",
 ##### ETAPE 2 : reformatage #####
 #on utilise la fonction melt() du package reshape2
 Comp1 <- melt(CompNum1_unmelted, id.vars="Age") # transforme les données en 3 colonnes, avec 1 ligne = 1 pourcentage/1 croisement
-colnames(Comp1, c("Tranche_d_age","Niveau_de_compétence", "Proportion")) #attribution d'un Nom aux Colonnes d'une Matrice
+nomcolmat1<-c("Tranche_d_age","Niveau_de_compétence", "Proportion")
+colnames(Comp1)<-nomcolmat1 #attribution d'un Nom aux Colonnes d'une Matrice
 Comp2 <- melt(CompNum2_unmelted, id.vars="Diplome") 
 nomcolmat2<-c("Diplome","Niveau_de_compétence", "Proportion")
 colnames(Comp2)<-nomcolmat2
-table(Comp2$Diplome)
-unique(Comp2$Diplome)
+#table(Comp2$Diplome)
+#unique(Comp2$Diplome)
 Comp2$Diplome<-factor(Comp2$Diplome, levels = c("Aucun diplôme ou CEP", "CAP, BEP ou BEPC", "Bac ou équivalent", "Bac +2", "Bac +3 ou plus", "Ensemble") ) #changement d'ordre pour la lisibilité du graphique en vulgarisation
 Comp2bis <- melt(CompNum2bis_unmelted, id.vars="Diplome") 
 colnames(Comp2bis)<-nomcolmat2
@@ -125,4 +126,4 @@ ggplot(Comp2bis, aes(x=Diplome, y=Proportion, fill=Niveau_de_compétence)) +
 ##### Améliorations possibles #####
 #stringr, grep,
 #retirer les . intermédiares de Plus.que.basique dans la légende
-#Avoir des titres de colonne de matrice en plusieurs mots sans que ça ne pose de problème dans les ggplot et X2
+
