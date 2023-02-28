@@ -1,0 +1,125 @@
+---
+title: "Quels sont les compétences des français dans le numérique ?"
+author: "LESUEUR Pierre"
+date: "27/02/2023"
+output: 
+  pdf_document:
+    latex_engine: xelatex
+    number_sections: yes
+    toc: yes
+bibliography: BiblioP&Cn.bib
+csl: isara-iso-690.csl
+header-includes:
+- \usepackage{titlesec}
+- \titleformat{\part}[display]{\Large\bfseries\filcenter}{\partname~\thepart}{20pt}{\LARGE\bfseries}
+- \titleformat{\section}[block]{\Large\bfseries\filcenter}{\thesection}{20pt}{\Large\bfseries}
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tinytex)
+library(bookdown)
+library(ggplot2)
+library(reshape2)
+```
+# Introduction.
+  "Le numérique est désormais un enjeu de premier ordre pour notre politique étrangère et pour l'action publique dans son ensemble" affirmait Jean-Yves le Drian en 2017. La stratégie politique de la France est de promouvoir l'utilisation d'internet, rendre cet outil accessible et sécurisé. Mais c'est aussi au niveau de l'Europe que cette stratégie est mise en place, sur la protection des données et sur l'autonomie dans le monde numérique. L'objectif de développement est clairement défini : "Faire de la France un pôle d'excellence dans le monde numérique"[@mahjoubi_strategie_2017]. Mais cela ne peut se passer sans impliquer la population française dans cette démarche. Elle implique donc de former les français,de les sensibiliser et de leur donner les moyens de parvenir à développer la France dans le monde du numérique. \
+  Il est alors important de se pencher sur la relation de la population au numérique, plus particulièrement aux technologies de l'information et de la communication. 
+  
+# Etudes sur les compétences numériques actuelles de la population française.
+On se propose ici de s'appuyer sur une partie d'une étude de l'INSEE à propos des compétences de la population française dans le numérique [@insee_leconomie_2019]. Il est question d'observer les compétences dans les technologies de la communication et de l'information (TIC) selon l'âge, le niveau d'étude et la catégorie socio-professionelle. Toutefois, nous ne nous pencherons pas sur cette dernière. 
+
+## Compétences numériques de la population française selon l'âge.
+
+ En partant du constat que les personnes plus agées sont très souvent les moins à l'aise avec les TIC, on peut alors s'interroger sur le lien entre l'âge d'un individu et ses compétences numériques. Car il est intéressant de supposer que les nouvelles générations sont de plus en plus formées au numérique.
+```{r Comp1,echo=F, eval=T,collapse=TRUE, fig.width=10, fig.align='right'}
+CompNum1_unmelted<-read.table("Fig1_INSEE_competences_numeriques.csv", 
+                     sep=";",dec=",",header=TRUE, 
+                     col.names = c("Age","Aucune", "Faible","Basique","Plus que basique" )
+                              )
+Comp1 <- melt(CompNum1_unmelted, id.vars="Age")
+nomcolmat1<-c("Tranche_d_age","Niveau_de_compétence", "Proportion")
+colnames(Comp1)<-nomcolmat1
+
+ggplot(Comp1, aes(x=Tranche_d_age, y=Proportion, fill=Niveau_de_compétence)) +
+  geom_bar(stat="identity", position="stack") +
+  labs(x="Tranche d'âge", y="Proportion de la population") +
+  ggtitle("Compétences numériques en fonction de l'âge") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+  Ce graphique vient corroborer cette hypothèse. Les moins de 30 ans sont les plus compétents dans le numérique, puisque la proportion de ceux qui n'ont aucune compétence dans le numérique est d'à peine plus de 2%, tandis que la proportion possédant une compétence basique ou plus est de plus de 80%. Ce gradient décroit selon l'âge, jusqu'à observer chez les 75 ans ou plus, que plus de 70% ne possèdent aucune compétence dans le numérique et presque 10% qui possèdent une compétence basique ou plus dans le numérique. La différence est très significative. La tranche d'âge semble donc avoir un fort lien avec les compétences dans le numérique. 
+  Observons également que dans l'ensemble, `r Comp1[6,3]`% de la population ne possède aucune compétence dans le numérique et `r Comp1[24,3]`% ont des compétences qui dépassent le basique, soit un total de la population ayant des compétences suffisantes au quotidien de `r Comp1[24,3]+Comp1[18,3]`%. 
+
+## Compétences numériques de la population française selon le niveau d'étude.
+
+### Des données erronées ?
+  
+  Un premier jeu de données est étudié pour étudier la relation entre le diplôme des individus et leurs compétences numériques.
+```{r Comp2,echo=F, eval=T,collapse=TRUE, fig.width=10, fig.align='right'}
+CompNum2_unmelted<-read.table("Fig2_INSEE_competences_numeriques.csv", 
+                              sep=";",dec=",",header=TRUE, 
+                              col.names = c("Diplome","Aucune", "Faible","Basique","Plus que basique" ),
+                              encoding = "latin1"
+                              )
+Comp2 <- melt(CompNum2_unmelted, id.vars="Diplome") 
+nomcolmat2<-c("Diplome","Niveau_de_compétence", "Proportion")
+colnames(Comp2)<-nomcolmat2
+Comp2$Diplome<-factor(Comp2$Diplome, levels = c("Aucun diplôme ou CEP", "CAP, BEP ou BEPC", "Bac ou équivalent", "Bac +2", "Bac +3 ou plus", "Ensemble") ) 
+
+ggplot(Comp2, aes(x=Diplome, y=Proportion, fill=Niveau_de_compétence)) +
+  geom_bar(stat="identity", position="stack") +
+  labs(x="Diplôme", y="Proportion de la population") +
+  ggtitle("Compétences numériques en fonction du niveau d'étude") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+```
+  \
+  Ce graphique montre effectivement une relation entre ces deux variables. Puisque, alors que ceux qui n'ont pas de diplôme ou un CEP sont composés de près de 50% de personnes qui ont des compétences dans le numérique au delà du basique, alors que seulement 15% ont des compétences faibles ou moins. Plus on progresse dans le niveau détude, plus on observe que le niveau de compétences en numérique diminue, notamment au niveau des compétences basiques. \
+  Toutefois, ces résulats sont assez innatendus, car il est plus difficile d'expliquer que les personnes ayant un niveau d'étude plus faible possèdent de meilleur compétence en numérique, plutôt que l'inverse. D'autant plus que l'INSEE, qui commente ses résultats, ne les commente pas dans ce sens. Ils affirment que plus le niveau de diplôme est important, plus les compétences numériques le sont aussi. \
+  Ainsi, on se propose de supposer que les données de l'INSEE présentent une erreur d'inversion dans les données, que l'on corrige pour reprendre l'analyse.
+
+### Données corrigées.
+```{r Comp2bis,echo=F, eval=T,collapse=TRUE, fig.width=10, fig.align='right'}
+CompNum2bis_unmelted<-read.table("Fig2bis_INSEE_competences_numeriques.csv", 
+                                 sep=";",dec=",",header=TRUE,
+                                 col.names = c("Diplome","Aucune", "Faible","Basique","Plus que basique" ),
+                                 encoding = "latin1"
+                                 )
+nomcolmat2<-c("Diplome","Niveau_de_compétence", "Proportion")
+Comp2bis <- melt(CompNum2bis_unmelted, id.vars="Diplome") 
+colnames(Comp2bis)<-nomcolmat2
+Comp2bis$Diplome<-factor(Comp2bis$Diplome, levels = c("Aucun diplôme ou CEP", "CAP, BEP ou BEPC", "Bac ou équivalent", "Bac +2", "Bac +3 ou plus", "Ensemble") ) 
+
+ggplot(Comp2bis, aes(x=Diplome, y=Proportion, fill=Niveau_de_compétence)) +
+  geom_bar(stat="identity", position="stack") +
+  labs(x="Diplôme", y="Proportion de la population") +
+  ggtitle("Compétences numériques en fonction du niveau d'étude") +
+  theme(plot.title = element_text(hjust = 0.5)
+  )
+```
+  \
+  Avec ce graphique, c'est bien l'inverse qui est montré, alors qu'avec un niveau Bac ou équivalent, ou Bac +2, plus de 37% de la population observée possède un niveau de compétence en informatique meilleur qu'un niveau basique, ce taux va s'élever à près de 55% avec un Bac +3 ou plus, et chute à 3,3% lorsqu'ils n'ont aucun diplôme. C'est même près de 50% des individus sans diplôme ou CEP qui n'ont aucune compétence dans le numérique. \
+  C'est donc intéressant de constater le lien entre les études et le niveau de compétence numériques. On peut supposer que lors des études, les étudiants acquièrent de nombreuses capacités à appréhender les TIC. Ce pourquoi, plus les études seraient longues, plus l'appropriation des TIC est importante et donc les compétences associées le sont aussi.\
+  Ce graphique semble cependant incomplet car il mélange les tranches d'âge, et seuls les plus jeunes ont pu être instruits dans leur scolarité sur le numérique, grâce à la démocratisation des outils. De plus, les plus de 40 ans avaient moins fréquemment un dîplome égal ou supérieur au bac [@insee_niveau_2019].  Cependant, ils apparaissent dans "Aucun diplôme ou CEP", mais on ne sait pas s'ils ont acquis des compétences dans le numérique. On ne peut donc que supposer que aujourd'hui l'éducation scolaire et supra-scolaire permet d'acquérir des compétences dans le numérique. 
+  
+## Critique sur les données
+
+  Toute cette discussion autour des graphiques de l'INSEE se base sur quatre niveaux de compétences : aucune, faible, basique et plus que basique qui sont des caractères qualitatifs dont on ne connait pas la méthode d'évaluation. Peut-êtres les participants ont-ils passé des tests pour évaluer leurs compétences, mais au vu de l'ampleur de l'étude et du caractère qualitatif, et donc explicitement impréci des données, je pense que les individus se sont évalués selon certains critères qu'on leur a fourni. Tout cela nous amène donc à dire qu'avec ce type d'information, on ne peut pas aller beaucoup plus loin dans l'analyse des données, qui ne sont que des proportions. Il faut également noter qu'on ne sait pas réellement, en plus de ne pas savoir le nombre d'individus, si le nombre d'individu de chaque, tranche d'âge, niveau de compétence et niveau d'étude, sont comparables. Peut-être que certaines catégories sont sur-représentés ou sous-représentés. \
+  Un autre élément à noter est que la catégorie "Aucune compétence" correspond à ceux qui ont effectivement aucune compétence, mais aussi à ceux qui n'utilisent jamais internet, de fait, ils n'ont pas de compétences très développés. Et cette nuance est importante, notamment pour l'analyse par tranche d'âge, puisque les personnes plus agés, n'ayant pas souvent vécu avec l'utilisation d'internet, ne l'utilise que très peu ou pas du tout pour beaucoup comme peut montrer le graphique. Mais c'est aussi une catégorie qui regroupe des individus qui n'ont pas les moyens d'avoir accès à internet pour des raisons diverses. L'étude étant réalisée dans l'ensemble de la France, sauf Mayotte, on peut imaginer que certaines personnes interrogées, n'ont pas d'accès aux TIC.
+  
+# Discussion des résultats
+
+  Au delà des facteurs influençants les compétences dans le numérique de la population française, ces données mettent en avant que l'illectronisme est très présent. D'après le Larousse, l'illectronisme est " l'état d’une personne qui ne maîtrise pas les compétences nécessaires à l’utilisation et à la création des ressources numériques." Elle se distingue alors entre l'utilisation des outils numériques et celle des contenus présents sur internet [@larousse_definitions_nodate]. On peut donc observer que le taux d'illectronisme en France est de `r Comp1[6,3]`%. Ce taux est assez élevé, puisque c'est plus d'une personne sur six qui n'utilise pas ou ne sait pas utiliser les technologies de l'information et de la communication. À l'heure où l'information et la communication sont devenus presque indisociables d'internet, cela peut représenter un réel handicap pour les personnes atteintes d'illectronisme. Le mot lui même tend à associer l'illectronisme à une anormalité, puisqu'il fait penser à un trouble d'apprentissage, tel que la dyslexie, plutôt qu'à un manque de compétence. La politique de la France pour le développement du numérique doit alors passer par la réduction du taux d'illectronisme. \
+  Comme nous l'observions précédemment, l'illectronisme est d'autant plus important sur les tranches d'âge les plus élevées. Le taux monte à `r Comp1[5,3]`% chez les plus de 75 ans, alors qu'il n'est que de `r Comp1[1,3]`% chez les 15-29 ans. Le phénomène est également d'autant plus présent que le niveau d'étude est faible. En effet c'est `r Comp2bis[1,3]`% des sans diplôme qui sont touchés contre en moyenne `r mean(c(Comp2bis[4,3],Comp2bis[5,3]))`% des bac +2 et bac +3 ou plus. \
+  En notant que le développement des nouvelles technologies s'est intensifié et démocratisé depuis les années 90, il semble cohérent que les moins de 30 ans aient pu avoir plus facilement accès aux TIC que les autres générations. Ils ont donc probablement dû être davantage éduqué à ces technologies. En effet, aujourd'hui les élèves sont systématiquement formés à l'utilisation des nouvelles technologies. Depuis le primaire et jusque dans les études supérieur, l'accent est mis sur la maitrise des compétences de base dans le numérique. Cette formation au numérique est obligatoire dans l'éducation national et dans l'enseignement supérieur, c'est l'exemple des tests PIX qui remplacent le B2i. Cela peut expliquer pourquoi les jeunes générations ont davantage de compétences dans le numérique que le autres. Toutefois, ces formations n'étant pas obligatoires dans le monde professionel, et étant trop souvent jugées inutiles, de nombreuses personnes n'ont alors jamais été formées au numérique [@begon_transformation_2021]. On notera cependant, que les personnes provenant d'endroit où l'accès aux TIC est difficile, présentent de moins bons résultats sur l'utilisation de celles-ci, malgrès l'éducation [@vie-publiquefr_fracture_2019]. \
+  Ces différences selon l'âge et le niveau de diplôme sont liées à la fracture numérique. La fracture numérique est la différence observée entre les personnes utilisants les TIC et les autres. En réalité elle se décline sous deux formes, la fracture de premier degré qui décrit l'inégalité d'accès, et la fracture de second degré qui décrit l'inégalité d'usage des TIC [@vie-publiquefr_fracture_2019].\
+  Les politiques tentent donc de jouer sur deux plans pour réduire cette fracture. Tout d'abord c'est par l'extension du réseau internet et la diffusion du matériel informatique ; ensuite c'est au travers de la formation de la population aux TIC. Ces action sont visibles par exemple, par l'arrivée de la fibre dans des villages de plus en plus reclus de France, par les aides à l'achat de matériel informatique, ou encore par la formation aux TIC. La France a également créée une start up d'état nommé Simplon, qui forme des travailleurs sociaux à l'aide aux personnes atteintes d'illectronisme pour réaliser leurs démarches administratives, mais forme aussi des conseillers en numérique pour qu'ils puissent animer des ateliers d'initiation aux TIC [@gouvernement_comment_2021].
+  
+# Conclusion
+
+  Cette étude des compétences d'utilisation des technologies de l'information et de la communication, au travers de l'âge et du niveua d'étude, permet de mettre en avant la politique de développement de la France face au numérique. Les propos de Jean-Yves le Drian en 2017, permettent de mettre en avant les difficultés de la population face au numérique. On constate en effet que les populations les plus agées et les moins formées sont les moins à l'aise avec le numérique. Ce sont donc les populations les plus modestes et ayant des niveaux de diplôme plus faibles qui sont le plus touchées par la fracture numérique. Ce pourquoi, la politique de développement mise en place au travers de l'aide à l'accès et à l'usage est cohérente. Le caractère obligatoire de la formation au numérique dans le supérieur est un réel atout pour la France par rapport aux pays voisins. \
+  Ainsi, c'est en identifiant les individus les moins compétents dans les TIC que la France a su mettre en oeuvre un plan d'action pour atteindre l'objectif de "faire de la France un pôle d'excellence dans le monde numérique"[@mahjoubi_strategie_2017].
+
+# Bibliographie
+
